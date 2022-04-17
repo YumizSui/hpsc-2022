@@ -1,5 +1,5 @@
 # hpc_lecture
-
+# 22M31090
 |          | Topic                                | Sample code               |
 | -------- | ------------------------------------ | ------------------------- |
 | Class 1  | Introduction to parallel programming |                           |
