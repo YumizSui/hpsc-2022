@@ -11,7 +11,7 @@ void sumcheck(vect_f& U, vect_f& V, vect_f& P, vect_f& B, const int N);
 
 int main(int argc, char** argv) {
 
-    const int N = 41;
+    const int N = 40;
 
     // mpi
     int size, rank;
