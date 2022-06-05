@@ -25,6 +25,7 @@ void navier_stokes(matrix& U, matrix& V, matrix& P, matrix& B, const int N) {
                             - pow((U[j][i+1] - U[j][i-1]) / (2. * dx), 2)
                             - 2. * ((U[j+1][i] - U[j-1][i]) / (2. * dy) * (V[j][i+1] - V[j][i-1]) / (2. * dx))
                             - pow((V[j+1][i] - V[j-1][i]) / (2. * dy), 2));
+                // B[j][i] = 1./dt*((U[j][i+1] - U[j][i-1]) / (2. * dx) + (V[j+1][i] - V[j-1][i]) / (2. * dy));
             }
         }
         for (int it = 0;it<Nit;it++){
@@ -47,15 +48,6 @@ void navier_stokes(matrix& U, matrix& V, matrix& P, matrix& B, const int N) {
         }
         matrix Un(U);
         matrix Vn(V);
-//         matrix Un(N,vector<float>(N));
-//         matrix Vn(N,vector<float>(N));
-// #pragma omp for collapse(2)
-//         for (int j=1;j<N-1;j++) {
-//             for (int i=1;i<N-1;i++) {
-//                 Un[j][i]=U[j][i];
-//                 Vn[j][i]=V[j][i];
-//             }
-//         }
 #pragma omp for collapse(2)
         for (int j=1;j<N-1;j++) {
             for (int i=1;i<N-1;i++) {
@@ -87,7 +79,7 @@ void navier_stokes(matrix& U, matrix& V, matrix& P, matrix& B, const int N) {
 
 int main() {
     // initialize matrix
-    const int N = 41;
+    const int N = 40;
     matrix U(N,vector<float>(N,0));
     matrix V(N,vector<float>(N,0));
     matrix P(N,vector<float>(N,0));
@@ -103,7 +95,6 @@ int main() {
 
     // sumcheck
     sumcheck(U, V, P, B, N);
-
     return 0;
 }
 
@@ -134,5 +125,5 @@ void sumcheck(matrix& U, matrix& V, matrix& P, matrix& B, const int N) {
             sum_V+=V[j][i];
         }
     }
-    printf("%2.6lf, %2.6lf, %2.6lf, %2.6lf", sum_B, sum_P, sum_U, sum_V);
+    printf("%2.6lf, %2.6lf, %2.6lf, %2.6lf\n", sum_B, sum_P, sum_U, sum_V);
 }
